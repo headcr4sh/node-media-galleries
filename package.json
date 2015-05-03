@@ -1,0 +1,28 @@
+{
+  "name": "media-galleries",
+  "version": "0.0.0",
+  "description": "Access to the user's media galleries in a platform-indepent way.",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodeunit test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:headcr4sh/node-media-galleries.git"
+  },
+  "keywords": [
+  ],
+  "author": "Benjamin P. Jung <headcr4sh@gmail.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/headcr4sh/node-media-galleries/issues"
+  },
+  "homepage": "https://github.com/headcr4sh/node-maven",
+  "dependencies": {
+    "bindings": "*",
+    "nan": "1.8.x"
+  },
+  "devDependencies": {
+    "nodeunit": "0.9.x"
+  }
+}
