@@ -13,6 +13,12 @@
           "sources": [
             "src/mediaGalleries_windows_desktop.cc"
           ]
+        }],
+        ["OS==\"linux\"", {
+          "sources": [
+            "src/linux/xdg-user-dirs.cc",
+            "src/mediaGalleries_linux.cc"
+          ]
         }]
       ]
     }
