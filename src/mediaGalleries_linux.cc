@@ -19,6 +19,9 @@ const string XDG_USER_DIRS[] = {
 };
 const unsigned int XDG_USER_DIRS_SIZE = 3;
 
+void initialize() {}
+void unInitialize() {}
+
 Local<Array> getPictureGalleries(Isolate* isolate) {
 
     Local<Array> galleries = Array::New(isolate, XDG_USER_DIRS_SIZE);

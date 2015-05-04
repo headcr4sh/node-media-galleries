@@ -1,11 +1,12 @@
 #include <cwchar>
+#include <iostream>
 
 #include <Windows.h>
 #include <winnt.h>
 #include <KnownFolders.h>
 #include <ShObjidl.h>
-
 #include <Shlwapi.h>
+#include <objbase.h>
 
 #include <node.h>
 #include <v8.h>
@@ -18,53 +19,58 @@ using namespace v8;
 namespace mediaGalleries {
 namespace impl {
 
+void initialize() {
+    CoInitialize(NULL);
+}
+
+void unInitialize() {
+    CoUninitialize();
+}
+
 Local<Array> getPictureGalleries(Isolate* isolate) {
 
+    HRESULT res = S_OK;
+
     IShellLibrary *picturesLibrary;
-
-    HRESULT
-    hr = SHLoadLibraryFromKnownFolder(FOLDERID_PicturesLibrary,
-                                      STGM_READ,
-                                      IID_PPV_ARGS(&picturesLibrary));
-
-    // picturesLibrary now points to the user's picture library
-
+    res = SHLoadLibraryFromKnownFolder(FOLDERID_PicturesLibrary,
+                                       STGM_READ,
+                                       IID_PPV_ARGS(&picturesLibrary));
 
     IShellItemArray *pictureFolders;
     picturesLibrary->GetFolders(LFF_FORCEFILESYSTEM, IID_PPV_ARGS(&pictureFolders));
-	DWORD* pictureFoldersCount;
-	pictureFolders->GetCount(pictureFoldersCount);
 
-	Local<Array> galleries = Array::New(isolate, (int) pictureFoldersCount);
 
-	for (DWORD i = 0; i < *pictureFoldersCount; ++i) {
-		IShellItem* pictureFolder;
-		LPWSTR name;
-		char* name_c;
-		LPWSTR path;
-		char* path_c;
+    DWORD pictureFoldersCount;
+    pictureFolders->GetCount(&pictureFoldersCount);
 
-		pictureFolders->GetItemAt(i, &pictureFolder);
+    Local<Array> galleries = Array::New(isolate, (int) pictureFoldersCount);
 
-		pictureFolder->GetDisplayName(SIGDN_NORMALDISPLAY, &name);
-		name_c = new char[wcslen(name) + 1];
-		wsprintfA(name_c, "%S", name);
+    for (unsigned long i = 0; i < pictureFoldersCount; ++i) {
+        IShellItem *pictureFolder;
+        LPWSTR name;
+        char *name_c;
+        LPWSTR path;
+        char *path_c;
 
-		pictureFolder->GetDisplayName(SIGDN_FILESYSPATH, &path);
-		path_c = new char[wcslen(path) + 1];
-		wsprintfA(path_c, "%S", path);
+        pictureFolders->GetItemAt(i, &pictureFolder);
 
-		Local<Object> folder = Object::New(isolate);
-		folder->Set(String::NewFromUtf8(isolate, "id"), String::NewFromUtf8(isolate, path_c));
-		folder->Set(String::NewFromUtf8(isolate, "name"), String::NewFromUtf8(isolate, name_c));
-		folder->Set(String::NewFromUtf8(isolate, "path"), String::NewFromUtf8(isolate, path_c));
-		galleries->Set(i, folder);
+        pictureFolder->GetDisplayName(SIGDN_NORMALDISPLAY, &name);
+        name_c = new char[wcslen(name) + 1];
+        wsprintfA(name_c, "%S", name);
 
-		delete name_c;
-		delete path_c;
-	}
+        pictureFolder->GetDisplayName(SIGDN_FILESYSPATH, &path);
+        path_c = new char[wcslen(path) + 1];
+        wsprintfA(path_c, "%S", path);
 
-	return galleries;
+        Local<Object> folder = Object::New(isolate);
+        folder->Set(String::NewFromUtf8(isolate, "id"), String::NewFromUtf8(isolate, path_c));
+        folder->Set(String::NewFromUtf8(isolate, "name"), String::NewFromUtf8(isolate, name_c));
+        folder->Set(String::NewFromUtf8(isolate, "path"), String::NewFromUtf8(isolate, path_c));
+        galleries->Set(i, folder);
+
+    }
+
+    return galleries;
 
 }
 

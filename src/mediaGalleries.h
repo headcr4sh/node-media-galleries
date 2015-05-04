@@ -9,6 +9,9 @@
 namespace mediaGalleries {
 namespace impl {
 
+void initialize();
+void unInitialize();
+
 v8::Local<v8::Array> getPictureGalleries(v8::Isolate* isolate);
 
 } // namespace impl

@@ -7,6 +7,8 @@ using namespace v8;
 
 void getPictureGalleries(const FunctionCallbackInfo<Value>& args) {
 
+    mediaGalleries::impl::initialize();
+
     Isolate* isolate = Isolate::GetCurrent();
     HandleScope scope(isolate);
 
@@ -25,6 +27,7 @@ void getPictureGalleries(const FunctionCallbackInfo<Value>& args) {
 
     Local<Value> argv[1] = { mediaGalleries::impl::getPictureGalleries(isolate) };
     successCallback->Call(isolate->GetCurrentContext()->Global(), 1, argv);
+    mediaGalleries::impl::unInitialize();
 
 }
 
