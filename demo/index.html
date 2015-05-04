@@ -11,7 +11,7 @@ and Electron <script>document.write(process.versions['electron'])</script>.
     var mediaGalleries = require('media-galleries');
     mediaGalleries.getPictureGalleries().then(function (pictureGalleries) {
         document.write("Picture galleries: ");
-        document.write(pictureGalleries);
+        document.write(JSON.stringify(pictureGalleries));
     });
 </script>
 </body>
