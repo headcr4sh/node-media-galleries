@@ -18,6 +18,9 @@
           "sources": [
             "src/linux/xdg-user-dirs.cc",
             "src/mediaGalleries_linux.cc"
+          ],
+          "cflags_cc": [
+            "-fexceptions"
           ]
         }]
       ]
