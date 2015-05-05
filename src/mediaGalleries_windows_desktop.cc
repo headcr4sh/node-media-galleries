@@ -64,6 +64,7 @@ Local<Array> getPictureGalleries(Isolate* isolate) {
 
         Local<Object> folder = Object::New(isolate);
         folder->Set(String::NewFromUtf8(isolate, "id"), String::NewFromUtf8(isolate, path_c));
+        folder->Set(String::NewFromUtf8(isolate, "type"), String::NewFromUtf8(isolate, "PICTURES"));
         folder->Set(String::NewFromUtf8(isolate, "name"), String::NewFromUtf8(isolate, name_c));
         folder->Set(String::NewFromUtf8(isolate, "path"), String::NewFromUtf8(isolate, path_c));
         galleries->Set(i, folder);
