@@ -1,6 +1,6 @@
 {
   "name": "media-galleries",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Access to the user's media galleries in a platform-indepent way.",
   "main": "index.js",
   "scripts": {

@@ -68,6 +68,8 @@ Local<Array> getPictureGalleries(Isolate* isolate) {
         folder->Set(String::NewFromUtf8(isolate, "path"), String::NewFromUtf8(isolate, path_c));
         galleries->Set(i, folder);
 
+        delete path_c;
+        delete name_c;
     }
 
     return galleries;
